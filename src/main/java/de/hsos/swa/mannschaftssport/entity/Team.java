@@ -31,6 +31,33 @@ public class Team {
         this.teamkategorie = kategorie;
     }
 
+    public void setzeManager(Long managerId){
+        this.managerId = managerId;
+    }
+
+    public void entferneManager(){
+        this.managerId = null;
+    }
+
+    public boolean hatManager(){
+        return this.managerId != null;
+    }
+
+    public void nimmAuf(Player player){
+        if(!player.hatSpielerID()){
+            throw new KeineSpielerIdException(player.getId());
+        }
+        playerIds.add(player.getId());
+    }
+
+    public void entferne(long playerId){
+        playerIds.remove(playerId);
+    }
+
+    public boolean hatPlayer(long playerId){
+        return playerIds.contains(playerId);
+    }
+
     public long getId() {
         return id;
     }
@@ -48,6 +75,6 @@ public class Team {
     }
 
     public Set<Long> getPlayerIds() {
-        return playerIds;
+        return Set.copyOf(playerIds);
     }
 }

@@ -22,8 +22,8 @@ public class Player {
         if (vorname == null || vorname.isBlank()) throw new IllegalArgumentException("Vorname darf nicht leer sein");
         if (nachname == null || nachname.isBlank()) throw new IllegalArgumentException("Nachname darf nicht leer sein");
         if (position == null || position.isBlank()) throw new IllegalArgumentException("Position darf nicht leer sein");
-        this.vorname = vorname;
-        this.nachname = nachname;
+        this.vorname = vorname.trim();
+        this.nachname = nachname.trim();
         this.position = position;
     }
 
