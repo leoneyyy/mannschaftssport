@@ -1,7 +1,9 @@
 package de.hsos.swa.passwesen.api;
 
-import java.util.concurrent.atomic.AtomicLong;
+import jakarta.enterprise.context.ApplicationScoped;
 
+import java.util.concurrent.atomic.AtomicLong;
+@ApplicationScoped
 public class PasswesenStub implements Passwesen {
 
     private final AtomicLong zaehler = new AtomicLong(1);
