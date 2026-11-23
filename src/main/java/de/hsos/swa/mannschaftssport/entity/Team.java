@@ -1,7 +1,8 @@
 package de.hsos.swa.mannschaftssport.entity;
 
+import de.hsos.swa.mannschaftssport.entity.exception.KeineSpielerIdException;
+
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Team {

@@ -1,4 +1,4 @@
 package de.hsos.swa.mannschaftssport.boundary.rest;
 
-public class ManagerResource {
+public record Fehler(String meldung) {
 }

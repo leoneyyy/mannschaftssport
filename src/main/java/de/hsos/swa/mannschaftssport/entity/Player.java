@@ -1,6 +1,6 @@
 package de.hsos.swa.mannschaftssport.entity;
 
-import java.util.Objects;
+import de.hsos.swa.mannschaftssport.entity.exception.SpielerIdBereitsVergebenException;
 
 public class Player {
 
@@ -33,7 +33,7 @@ public class Player {
 
     public void weiseSpielerIdZu(String spielerId){
         if(hatSpielerID()){
-            throw new SpielerIdBereitsVergebenException("Spieler darf nicht leer sein");
+            throw new SpielerIdBereitsVergebenException(id);
         }
         if(spielerId == null || spielerId.isBlank()){
             throw new IllegalArgumentException("Spieler-ID darf nicht leer sein");
