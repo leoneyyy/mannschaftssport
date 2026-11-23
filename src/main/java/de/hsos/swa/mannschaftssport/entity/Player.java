@@ -11,20 +11,33 @@ public class Player {
 
     public Player(long id, String vorname, String nachname,  String position, String spielerId){
         this.id = id;
-        aendere(vorname, nachname, position, spielerId);
+        this.spielerId = spielerId;
+        aendere(vorname, nachname, position);
     }
     public Player(String vorname, String nachname, String position, String spielerId){
-        this(0,vorname,nachname,position,spielerId);
+        this(0,vorname,nachname,position,null);
     }
 
-    public void aendere(String vorname, String nachname, String position, String spielerId){
-        if(vorname == null || vorname.isBlank()) throw new IllegalArgumentException("Vorname darf nicht leer sein");
-        if(nachname == null || nachname.isBlank()) throw new IllegalArgumentException("Nachname darf nicht leer sein");
-        if(position == null || position.isBlank()) throw new IllegalArgumentException("Position darf nicht leer sein");
-        if(spielerId == null || spielerId.isBlank())throw new IllegalArgumentException("SpielerId darf nicht leer sein");
+    public void aendere(String vorname, String nachname, String position) {
+        if (vorname == null || vorname.isBlank()) throw new IllegalArgumentException("Vorname darf nicht leer sein");
+        if (nachname == null || nachname.isBlank()) throw new IllegalArgumentException("Nachname darf nicht leer sein");
+        if (position == null || position.isBlank()) throw new IllegalArgumentException("Position darf nicht leer sein");
         this.vorname = vorname;
         this.nachname = nachname;
         this.position = position;
+    }
+
+    public boolean hatSpielerID(){
+        return spielerId != null;
+    }
+
+    public void weiseSpielerIdZu(String spielerId){
+        if(hatSpielerID()){
+            throw new SpielerIdBereitsVergebenException("Spieler darf nicht leer sein");
+        }
+        if(spielerId == null || spielerId.isBlank()){
+            throw new IllegalArgumentException("Spieler-ID darf nicht leer sein");
+        }
         this.spielerId = spielerId;
     }
 
@@ -50,13 +63,11 @@ public class Player {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Player player = (Player) o;
-        return id == player.id && Objects.equals(vorname, player.vorname) && Objects.equals(nachname, player.nachname) && Objects.equals(position, player.position) && Objects.equals(spielerId, player.spielerId);
+        return o instanceof Player andere && id != 0 && andere.id == id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, vorname, nachname, position, spielerId);
+        return Long.hashCode(id);
     }
 }

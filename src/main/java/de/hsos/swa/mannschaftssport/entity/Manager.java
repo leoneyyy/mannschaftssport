@@ -3,7 +3,8 @@ package de.hsos.swa.mannschaftssport.entity;
 public class Manager {
 
     private final long id;
-    private String vorname, nachname;
+    private String vorname;
+    private String nachname;
 
     public Manager(long id, String vorname, String nachname){
         this.id = id;

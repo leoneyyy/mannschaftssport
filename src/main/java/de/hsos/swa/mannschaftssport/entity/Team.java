@@ -1,6 +1,8 @@
 package de.hsos.swa.mannschaftssport.entity;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Team {
 
@@ -8,16 +10,18 @@ public class Team {
     private String name;
     private Teamkategorie teamkategorie;
     private Long managerId;
-    private List<Long> playerIds;
+    private final Set<Long> playerIds = new LinkedHashSet<>();
 
-    public Team(long id, String name, Teamkategorie teamkategorie, long managerId, List<Long> playerIds){
+    public Team(long id, String name, Teamkategorie teamkategorie, Long managerId, Set<Long> playerIds){
         this.id = id;
+        this.managerId = managerId;
+        this.playerIds.addAll(playerIds);
         aendere(name, teamkategorie);
 
     }
 
-    public Team(String name, Teamkategorie teamkategorie, long managerId, List<Long> playerIds){
-        this(0, name, teamkategorie,managerId,playerIds);
+    public Team(String name, Teamkategorie teamkategorie, Long managerId, Set<Long> playerIds){
+        this(0, name, teamkategorie,null, Set.of());
     }
 
     public void aendere(String name, Teamkategorie kategorie){
@@ -43,7 +47,7 @@ public class Team {
         return managerId;
     }
 
-    public List<Long> getPlayerIds() {
+    public Set<Long> getPlayerIds() {
         return playerIds;
     }
 }
