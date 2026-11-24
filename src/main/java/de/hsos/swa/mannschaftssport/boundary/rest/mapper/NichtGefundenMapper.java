@@ -1,4 +1,4 @@
-package de.hsos.swa.mannschaftssport.boundary.rest;
+package de.hsos.swa.mannschaftssport.boundary.rest.mapper;
 
 import de.hsos.swa.mannschaftssport.entity.exception.NichtGefundenException;
 import jakarta.ws.rs.core.MediaType;

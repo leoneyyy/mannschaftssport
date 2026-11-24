@@ -24,7 +24,7 @@ public class PlayerRepository implements PlayerKatalog {
 
     @Override
     public List<Player> alle() {
-        LOG.trace(alle());
+        LOG.trace("alle");
         return new ArrayList<>(players.values());
     }
 

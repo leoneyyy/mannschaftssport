@@ -1,0 +1,64 @@
+### neuer Player
+POST http://localhost:8080/players
+Content-Type: application/json
+
+{ "vorname": "Max", "nachname": "Muster", "position": "Sturm" }
+> {% client.global.set("playerId", response.body.id); %}
+
+### mit Links abrufen
+GET http://localhost:8080/players/1
+Accept: application/hal+json
+
+### Spielerpass registrieren
+POST http://localhost:8080/players/1/spielerpass
+Accept: application/hal+json
+
+### erneut abrufen: der Link "spielerpass-registrieren" ist weg
+GET http://localhost:8080/players/1
+Accept: application/hal+json
+
+### neues Team
+POST http://localhost:8080/teams
+Content-Type: application/json
+
+{ "name": "Alpha", "kategorie": "herren" }
+> {% client.global.set("teamId", response.body.id); %}
+
+### Team mit Links abrufen
+GET http://localhost:8080/teams/{{teamId}}
+Accept: application/hal+json
+
+### alle Teams als HAL-Collection
+GET http://localhost:8080/teams
+Accept: application/hal+json
+
+### neuer Manager
+POST http://localhost:8080/managers
+Content-Type: application/json
+
+{ "vorname": "Hans", "nachname": "Trainer" }
+> {% client.global.set("managerId", response.body.id); %}
+
+### Manager mit Links abrufen
+GET http://localhost:8080/managers/{{managerId}}
+Accept: application/hal+json
+
+### alle Manager als HAL-Collection
+GET http://localhost:8080/managers
+Accept: application/hal+json
+
+### Manager einem Team zuweisen (liefert Team mit Links)
+PUT http://localhost:8080/teams/{{teamId}}/manager/{{managerId}}
+Accept: application/hal+json
+
+### Manager eines Teams mit Links abrufen
+GET http://localhost:8080/teams/{{teamId}}/manager
+Accept: application/hal+json
+
+### Spieler ins Team aufnehmen (liefert Team mit Links)
+PUT http://localhost:8080/teams/{{teamId}}/players/{{playerId}}
+Accept: application/hal+json
+
+### Kader des Teams als HAL-Collection
+GET http://localhost:8080/teams/{{teamId}}/players
+Accept: application/hal+json

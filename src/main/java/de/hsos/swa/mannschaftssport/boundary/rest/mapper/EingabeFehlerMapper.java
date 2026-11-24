@@ -1,4 +1,4 @@
-package de.hsos.swa.mannschaftssport.boundary.rest;
+package de.hsos.swa.mannschaftssport.boundary.rest.mapper;
 
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;

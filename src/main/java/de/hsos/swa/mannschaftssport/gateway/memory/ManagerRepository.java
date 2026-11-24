@@ -22,7 +22,7 @@ public class ManagerRepository implements ManagerKatalog {
 
     @Override
     public List<Manager> alle() {
-        LOG.trace(alle());
+        LOG.trace("alle");
         return new ArrayList<>(managers.values());
     }
 
