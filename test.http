@@ -21,7 +21,7 @@ Accept: application/hal+json
 POST http://localhost:8080/teams
 Content-Type: application/json
 
-{ "name": "Alpha", "kategorie": "herren" }
+{ "name": "Alpha", "kategorie": "Junioren"}
 > {% client.global.set("teamId", response.body.id); %}
 
 ### Team mit Links abrufen
