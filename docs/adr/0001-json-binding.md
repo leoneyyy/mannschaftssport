@@ -40,10 +40,14 @@ Rahmenbedingungen aus dem Projekt:
 | Erfahrung im Team           | AB02, AB03      | keine                 |
 
 ## Untersuchung
-- DTOs als Java-Records mit JSON-B gelesen und geschrieben
-  (POST /players, GET /players/{id}): TODO Ergebnis eintragen.
-- HAL-Ausgabe mit `quarkus-hal` und `quarkus-rest-jsonb`:
-  Erscheinen `_links` und `_embedded` im Body? TODO Ergebnis eintragen.
+- DTOs als Java-Records mit JSON-B gelesen und geschrieben (POST /players,
+  GET /players/{id}): JSON-B serialisiert und deserialisiert die Records ohne
+  zusätzliche Konfiguration. Annotationen aus `jakarta.json.bind.annotation`
+  (z. B. `@JsonbProperty`) werden berücksichtigt.
+- HAL-Ausgabe mit `quarkus-hal` und `quarkus-rest-jsonb`: Beim Aufruf mit
+  `Accept: application/hal+json` erzeugt `HalEntityWrapper` einen Body mit
+  `_links`, `HalCollectionWrapper` zusätzlich `_embedded`. JSON-B und `quarkus-hal`
+  funktionieren also zusammen.
 
 ## Entscheidung
 Wir verwenden JSON-B.
