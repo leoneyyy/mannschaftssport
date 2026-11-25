@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>161</x>
+      <y>112</y>
+      <w>1204</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>de.hsos.swa.mannschaftssport.boundary
+bg=#E3F2FD
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>161</x>
+      <y>287</y>
+      <w>1204</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>de.hsos.swa.mannschaftssport.control
+bg=#FFF8E1
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>161</x>
+      <y>427</y>
+      <w>1204</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>de.hsos.swa.mannschaftssport.entity
+bg=#E8F5E9
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>161</x>
+      <y>693</y>
+      <w>756</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>de.hsos.swa.mannschaftssport.gateway
+bg=#F3E5F5
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>539</x>
+      <y>840</y>
+      <w>448</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>de.hsos.swa.passwesen  (fremdes Modul)
+bg=#EFEBE9
+layer=-1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>140</y>
+      <w>224</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>TeamResource
+«Rest-Resource»
+--
+/teams
+/teams/{id}
+/teams/{id}/players/{playerId}
+/teams/{id}/manager/{managerId}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>595</x>
+      <y>140</y>
+      <w>161</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>ManagerResource
+«Rest-Resource»
+--
+/managers
+/managers/{id}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>413</x>
+      <y>140</y>
+      <w>161</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>PlayerResource
+«Rest-Resource»
+--
+/players
+/players/{id}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>805</x>
+      <y>140</y>
+      <w>196</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>SpielerpassResource
+«Rest-Resource»
+--
+/players/{id}/spielerpass</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1036</x>
+      <y>133</y>
+      <w>308</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Boundary
+- je Ressource TeamDTO, PlayerDTO, ManagerDTO
+  (JSON-B, HAL-Format)
+- Links: self, players, manager
+- zustandsabhaengig: spielerpass-registrieren
+  nur, wenn spielerId == null
+- Fehler: 404 nicht gefunden, 409 Regelverletzung
+bg=#FFFDE7</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>357</x>
+      <y>308</y>
+      <w>210</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>KaderVerwaltung
+«Use Case»
+--
++nimmAuf(team, player)
++entferne(team, player)
++setzeManager(team, manager)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>637</x>
+      <y>308</y>
+      <w>182</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>SpielerpassVergabe
+«Use Case»
+--
++registriere(player)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>455</y>
+      <w>140</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>«interface»
+TeamKatalog
+--
++alle()
++finde(id)
++speichere(team)
++loesche(id)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>336</x>
+      <y>455</y>
+      <w>140</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>«interface»
+PlayerKatalog
+--
++alle()
++finde(id)
++speichere(player)
++loesche(id)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>497</x>
+      <y>455</y>
+      <w>140</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>«interface»
+ManagerKatalog
+--
++alle()
++finde(id)
++speichere(manager)
++loesche(id)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>658</x>
+      <y>455</y>
+      <w>161</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>«interface»
+SpielerpassRegister
+«Port»
+--
++registriere(player): spielerId</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>854</x>
+      <y>455</y>
+      <w>154</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>Team
+«Aggregate Root»
+--
+-name
+-kategorie
+--
++nimmAuf(player)
++setzeManager(manager)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1106</x>
+      <y>455</y>
+      <w>126</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>Player
+«Aggregate Root»
+--
+-vorname, nachname
+-position
+-spielerId (anfangs null)
+--
++weiseSpielerIdZu(id)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1078</x>
+      <y>560</y>
+      <w>140</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Manager
+«Aggregate Root»
+--
+-vorname, nachname</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>854</x>
+      <y>581</y>
+      <w>112</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>«enumeration»
+Teamkategorie
+--
+JUNIOREN
+SENIOREN
+MASTERS</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>721</y>
+      <w>140</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>TeamRepository
+«Repository, In-Memory»</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>336</x>
+      <y>721</y>
+      <w>140</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>PlayerRepository
+«Repository, In-Memory»</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>497</x>
+      <y>721</y>
+      <w>140</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>ManagerRepository
+«Repository, In-Memory»</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>658</x>
+      <y>721</y>
+      <w>161</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>PasswesenAdapter
+«Adapter»</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>553</x>
+      <y>868</y>
+      <w>168</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>«interface»
+Passwesen
+«API»
+--
++registriereSpielerpass(player)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>777</x>
+      <y>868</y>
+      <w>175</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>PasswesenStub
+«Platzhalter bis Lieferung»
+--
++registriereSpielerpass(player)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>322</x>
+      <y>210</y>
+      <w>105</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+«use»</panel_attributes>
+    <additional_attributes>126.0;140.0;130.0;80.0;10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>735</x>
+      <y>189</y>
+      <w>140</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+«use»</panel_attributes>
+    <additional_attributes>10.0;170.0;10.0;120.0;180.0;120.0;178.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>210</y>
+      <w>49</w>
+      <h>259</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+«use»</panel_attributes>
+    <additional_attributes>10.0;350.0;14.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>602</x>
+      <y>196</y>
+      <w>49</w>
+      <h>273</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+«use»</panel_attributes>
+    <additional_attributes>20.0;370.0;19.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>427</x>
+      <y>196</y>
+      <w>217</w>
+      <h>273</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+«use»</panel_attributes>
+    <additional_attributes>10.0;370.0;10.0;320.0;250.0;320.0;250.0;100.0;80.0;100.0;82.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>266</x>
+      <y>350</y>
+      <w>112</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0;135.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>371</x>
+      <y>371</y>
+      <w>98</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;40.0;110.0;40.0;115.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>518</x>
+      <y>371</y>
+      <w>21</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>455</x>
+      <y>350</y>
+      <w>238</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;70.0;310.0;70.0;312.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>735</x>
+      <y>350</y>
+      <w>21</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;150.0;11.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>238</x>
+      <y>525</y>
+      <w>21</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;280.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>399</x>
+      <y>532</y>
+      <w>21</w>
+      <h>203</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>532</y>
+      <w>21</w>
+      <h>203</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>728</x>
+      <y>511</y>
+      <w>63</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+«realizes»</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;300.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>749</y>
+      <w>91</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+«use»</panel_attributes>
+    <additional_attributes>10.0;170.0;10.0;70.0;110.0;70.0;109.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>714</x>
+      <y>882</y>
+      <w>77</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1001</x>
+      <y>469</y>
+      <w>119</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..*
+m2=0..1</panel_attributes>
+    <additional_attributes>150.0;10.0;10.0;13.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1001</x>
+      <y>518</y>
+      <w>91</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..1
+m2=0..*</panel_attributes>
+    <additional_attributes>110.0;93.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>882</x>
+      <y>532</y>
+      <w>28</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1</panel_attributes>
+    <additional_attributes>14.0;70.0;20.0;10.0</additional_attributes>
+  </element>
+</diagram>
