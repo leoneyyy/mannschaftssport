@@ -62,11 +62,12 @@ public class PlayerResource {
                             schema = @Schema(implementation = PlayerDTO.class))),
             @APIResponse(responseCode = "400", description = "Ungültige Eingabe")
     })
+    @Produces({MediaType.APPLICATION_JSON, RestMediaType.APPLICATION_HAL_JSON})
     public Response anlegen(PlayerEingabeDTO eingabe, @Context UriInfo uriInfo) {
         if (eingabe == null) throw new IllegalArgumentException("Eingabe darf nicht leer sein");
         Player neu = players.speichere(new Player(eingabe.vorname(), eingabe.nachname(), eingabe.position(), null));
         return Response.created(uriInfo.getAbsolutePathBuilder().path(Long.toString(neu.getId())).build())
-                .entity(PlayerDTO.von(neu))
+                .entity(PlayerLinks.mitLinks(neu, uriInfo))
                 .build();
     }
 }

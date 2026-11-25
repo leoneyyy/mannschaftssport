@@ -9,6 +9,7 @@ import de.hsos.swa.mannschaftssport.entity.Manager;
 import de.hsos.swa.mannschaftssport.entity.ManagerKatalog;
 import de.hsos.swa.mannschaftssport.entity.Team;
 import de.hsos.swa.mannschaftssport.entity.TeamKatalog;
+import de.hsos.swa.mannschaftssport.entity.exception.KeinManagerException;
 import de.hsos.swa.mannschaftssport.entity.exception.ManagerNichtGefundenException;
 import de.hsos.swa.mannschaftssport.entity.exception.TeamNichtGefundenException;
 import io.quarkus.hal.HalEntityWrapper;
@@ -60,7 +61,7 @@ public class TeamManagerResource {
         Team team = teams.finde(teamId);
         if (team == null) throw new TeamNichtGefundenException(teamId);
         Long managerId = team.getManagerId();
-        if (managerId == null) throw new ManagerNichtGefundenException(0);
+        if (managerId == null) throw new KeinManagerException(teamId);
         Manager manager = managers.finde(managerId);
         if (manager == null) throw new ManagerNichtGefundenException(managerId);
         return ManagerLinks.mitLinks(manager, uriInfo);

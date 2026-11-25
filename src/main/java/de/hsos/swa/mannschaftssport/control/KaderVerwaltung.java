@@ -46,6 +46,26 @@ public class KaderVerwaltung {
         return teams.speichere(team);
     }
 
+
+    public void loeschePlayer(long playerId) {
+        if (players.finde(playerId) == null) throw new PlayerNichtGefundenException(playerId);
+        Team team = teams.findeTeamvon(playerId);
+        if (team != null) {
+            team.entferne(playerId);
+            teams.speichere(team);
+        }
+        players.loesche(playerId);
+    }
+
+    public void loescheManager(long managerId) {
+        if (managers.finde(managerId) == null) throw new ManagerNichtGefundenException(managerId);
+        for (Team team : teams.findeTeamsVonManager(managerId)) {
+            team.entferneManager();
+            teams.speichere(team);
+        }
+        managers.loesche(managerId);
+    }
+
     private Team holeTeam(long teamId) {
         Team team = teams.finde(teamId);
         if (team == null) throw new TeamNichtGefundenException(teamId);

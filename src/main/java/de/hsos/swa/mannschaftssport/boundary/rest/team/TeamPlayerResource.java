@@ -66,7 +66,7 @@ public class TeamPlayerResource {
             Player p = players.finde(pid);
             if (p != null) eintraege.add(PlayerLinks.mitLinks(p,uriInfo));
         }
-        URI teamUri = uriInfo.getBaseUriBuilder().path("teams").path(Long.toString(teamId)).build();
+        URI teamUri = uriInfo.getBaseUriBuilder().path(TeamIdResource.class).build(teamId);
         return new HalCollectionWrapper<>(eintraege, "players", Link.fromUri(uriInfo.getRequestUri()).rel("self").build(),Link.fromUri(teamUri).rel("team").build());
     }
 

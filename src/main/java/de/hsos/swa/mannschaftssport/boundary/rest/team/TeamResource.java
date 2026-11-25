@@ -65,12 +65,13 @@ public class TeamResource {
                             schema = @Schema(implementation = TeamDTO.class))),
             @APIResponse(responseCode = "400", description = "Ungültige Eingabe")
     })
+    @Produces({MediaType.APPLICATION_JSON, RestMediaType.APPLICATION_HAL_JSON})
     public Response anlegen(TeamEingabeDTO eingabe, @Context UriInfo uriInfo) {
         if (eingabe == null) throw new IllegalArgumentException("Eingabe darf nicht leer sein");
         Teamkategorie kategorie = Kategorien.parse(eingabe.kategorie());
         Team neu = teams.speichere(new Team(0, eingabe.name(), kategorie, null, Set.of()));
         return Response.created(uriInfo.getAbsolutePathBuilder().path(Long.toString(neu.getId())).build())
-                .entity(TeamDTO.von(neu))
+                .entity(TeamLinks.mitLinks(neu, uriInfo))
                 .build();
     }
 }

@@ -3,6 +3,7 @@ package de.hsos.swa.mannschaftssport.boundary.rest.player;
 import de.hsos.swa.mannschaftssport.boundary.dto.PlayerDTO;
 import de.hsos.swa.mannschaftssport.boundary.dto.PlayerEingabeDTO;
 import de.hsos.swa.mannschaftssport.boundary.rest.links.PlayerLinks;
+import de.hsos.swa.mannschaftssport.control.KaderVerwaltung;
 import de.hsos.swa.mannschaftssport.entity.Player;
 import de.hsos.swa.mannschaftssport.entity.PlayerKatalog;
 import de.hsos.swa.mannschaftssport.entity.exception.PlayerNichtGefundenException;
@@ -36,6 +37,9 @@ public class PlayerIdResource {
     @Inject
     PlayerKatalog players;
 
+    @Inject
+    KaderVerwaltung kader;
+
     @GET
     @Operation(summary = "Spieler lesen", description = "Liefert einen einzelnen Spieler anhand seiner ID.")
     @APIResponses({
@@ -66,7 +70,7 @@ public class PlayerIdResource {
         Player p = players.finde(id);
         if (p == null) throw new PlayerNichtGefundenException(id);
         p.aendere(eingabe.vorname(), eingabe.nachname(), eingabe.position());
-        return PlayerLinks.mitLinks(p,uriInfo);
+        return PlayerLinks.mitLinks(players.speichere(p), uriInfo);
     }
 
     @DELETE
@@ -76,7 +80,7 @@ public class PlayerIdResource {
             @APIResponse(responseCode = "404", description = "Spieler nicht gefunden")
     })
     public Response loesche(@PathParam("id") long id) {
-        if (!players.loesche(id)) throw new PlayerNichtGefundenException(id);
+        kader.loeschePlayer(id);
         return Response.noContent().build();
     }
 }

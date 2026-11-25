@@ -67,6 +67,18 @@ public class TeamRepository implements TeamKatalog {
     }
 
     @Override
+    public List<Team> findeTeamsVonManager(long managerId) {
+        LOG.tracef("findeTeamsVonManager managerId=%d", managerId);
+        List<Team> ergebnis = new ArrayList<>();
+        for (Team t : teams.values()) {
+            if (t.getManagerId() != null && t.getManagerId() == managerId) {
+                ergebnis.add(t);
+            }
+        }
+        return ergebnis;
+    }
+
+    @Override
     public boolean loesche(long id) {
         LOG.tracef("loesche id=%d", id);
         return teams.remove(id) != null;

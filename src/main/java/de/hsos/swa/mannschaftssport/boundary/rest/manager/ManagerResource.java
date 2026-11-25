@@ -62,11 +62,12 @@ public class ManagerResource {
                             schema = @Schema(implementation = ManagerDTO.class))),
             @APIResponse(responseCode = "400", description = "Ungültige Eingabe")
     })
+    @Produces({MediaType.APPLICATION_JSON, RestMediaType.APPLICATION_HAL_JSON})
     public Response anlegen(ManagerEingabe eingabe, @Context UriInfo uriInfo) {
         if (eingabe == null) throw new IllegalArgumentException("Eingabe darf nicht leer sein");
         Manager neu = managers.speichere(new Manager(eingabe.vorname(), eingabe.nachname()));
         return Response.created(uriInfo.getAbsolutePathBuilder().path(Long.toString(neu.getId())).build())
-                .entity(ManagerDTO.von(neu))
+                .entity(ManagerLinks.mitLinks(neu, uriInfo))
                 .build();
     }
 }

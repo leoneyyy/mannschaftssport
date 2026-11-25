@@ -14,5 +14,7 @@ public interface TeamKatalog {
 
     Team findeTeamvon(long playerId);
 
+    List<Team> findeTeamsVonManager(long managerId);
+
     boolean loesche(long id);
 }

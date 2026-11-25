@@ -3,6 +3,7 @@ package de.hsos.swa.mannschaftssport.boundary.rest.manager;
 import de.hsos.swa.mannschaftssport.boundary.dto.ManagerDTO;
 import de.hsos.swa.mannschaftssport.boundary.dto.ManagerEingabe;
 import de.hsos.swa.mannschaftssport.boundary.rest.links.ManagerLinks;
+import de.hsos.swa.mannschaftssport.control.KaderVerwaltung;
 import de.hsos.swa.mannschaftssport.entity.Manager;
 import de.hsos.swa.mannschaftssport.entity.ManagerKatalog;
 import de.hsos.swa.mannschaftssport.entity.exception.ManagerNichtGefundenException;
@@ -35,6 +36,9 @@ public class ManagerIdResource {
 
     @Inject
     ManagerKatalog managers;
+
+    @Inject
+    KaderVerwaltung kader;
 
     @GET
     @Operation(summary = "Manager lesen", description = "Liefert einen einzelnen Manager anhand seiner ID.")
@@ -76,7 +80,7 @@ public class ManagerIdResource {
             @APIResponse(responseCode = "404", description = "Manager nicht gefunden")
     })
     public Response loesche(@PathParam("id") long id) {
-        if (!managers.loesche(id)) throw new ManagerNichtGefundenException(id);
+        kader.loescheManager(id);
         return Response.noContent().build();
     }
 }
