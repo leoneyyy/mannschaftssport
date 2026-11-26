@@ -41,6 +41,14 @@ public class MannschaftsRepository implements TeamKatalog, PlayerKatalog, Manage
     }
 
     @Override
+    public Team findeTeamVon(Long playerId) {
+        return teams.values().stream()
+                .filter(team -> team.hasPlayer(playerId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
     public List<Team> alleTeams() {
         return teams.values().stream()
                 .sorted(Comparator.comparing(Team::getId))

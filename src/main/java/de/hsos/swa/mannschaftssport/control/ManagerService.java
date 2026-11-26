@@ -4,6 +4,7 @@ import de.hsos.swa.mannschaftssport.entity.Manager;
 import de.hsos.swa.mannschaftssport.entity.ManagerKatalog;
 import de.hsos.swa.mannschaftssport.entity.Team;
 import de.hsos.swa.mannschaftssport.entity.TeamKatalog;
+import de.hsos.swa.mannschaftssport.entity.exception.ManagerNichtGefundenException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -25,7 +26,7 @@ public class ManagerService {
     public Manager finde(Long id) {
         Manager manager = managerKatalog.findeManager(id);
         if (manager == null) {
-            throw new NichtGefundenException("Manager", id);
+            throw new ManagerNichtGefundenException(id);
         }
         return manager;
     }
@@ -45,6 +46,7 @@ public class ManagerService {
         for (Team team : teamKatalog.alleTeams()) {
             if (manager.equals(team.getManager())) {
                 team.removeManager();
+                teamKatalog.speichereTeam(team);
             }
         }
         managerKatalog.loescheManager(id);

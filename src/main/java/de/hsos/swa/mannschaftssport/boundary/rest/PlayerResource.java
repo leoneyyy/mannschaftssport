@@ -4,6 +4,7 @@ import de.hsos.swa.mannschaftssport.boundary.dto.PlayerDTO;
 import de.hsos.swa.mannschaftssport.boundary.dto.PlayerInputDTO;
 import de.hsos.swa.mannschaftssport.control.PlayerService;
 import de.hsos.swa.mannschaftssport.entity.Player;
+import io.quarkus.hal.HalCollectionWrapper;
 import io.quarkus.hal.HalEntityWrapper;
 import io.quarkus.hal.HalService;
 import io.quarkus.resteasy.reactive.links.InjectRestLinks;
@@ -37,7 +38,7 @@ import java.util.List;
 @Path("/players")
 @Produces({MediaType.APPLICATION_JSON, "application/hal+json"})
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Players", description = "Verwaltung der Spieler und ihrer Spielerpässe")
+@Tag(name = "Players", description = "Verwaltung der Spieler")
 public class PlayerResource {
 
     @Inject
@@ -48,13 +49,15 @@ public class PlayerResource {
 
     @GET
     @RestLink(rel = "list", entityType = PlayerDTO.class)
-    @InjectRestLinks
-    @Operation(summary = "Alle Spieler abrufen")
+    @Operation(summary = "Alle Spieler abrufen",
+            description = "Jeder Spieler ohne Spieler-ID enthält den Link spielerpass-registrieren.")
     @APIResponse(responseCode = "200", description = "Liste aller Spieler")
-    public List<PlayerDTO> alle() {
-        return playerService.alle().stream()
-                .map(PlayerDTO::fromEntity)
+    public HalCollectionWrapper<PlayerDTO> alle(@Context UriInfo uriInfo) {
+        List<HalEntityWrapper<PlayerDTO>> eintraege = playerService.alle().stream()
+                .map(player -> mitLinks(PlayerDTO.fromEntity(player), uriInfo))
                 .toList();
+        return new HalCollectionWrapper<>(eintraege, "players",
+                Link.fromUri(uriInfo.getRequestUri()).rel("self").build());
     }
 
     @GET
@@ -67,13 +70,9 @@ public class PlayerResource {
     @APIResponse(responseCode = "404", description = "Spieler nicht gefunden")
     public Response finde(@PathParam("id") Long id, @Context UriInfo uriInfo) {
         PlayerDTO dto = PlayerDTO.fromEntity(playerService.finde(id));
-        HalEntityWrapper<PlayerDTO> hal = halService.toHalWrapper(dto);
-        Response.ResponseBuilder antwort = Response.ok(hal);
-
+        Response.ResponseBuilder antwort = Response.ok(mitLinks(dto, uriInfo));
         if (dto.spielerId() == null) {
-            Link link = spielerpassLink(id, uriInfo);
-            hal.addLinks(link);
-            antwort.links(link);
+            antwort.links(SpielerpassResource.link(id, uriInfo));
         }
         return antwort.build();
     }
@@ -104,7 +103,7 @@ public class PlayerResource {
 
     @DELETE
     @Path("/{id}")
-    @Operation(summary = "Spieler löschen", description = "Der Spieler wird auch aus allen Teams entfernt.")
+    @Operation(summary = "Spieler löschen", description = "Der Spieler wird auch aus seinem Team entfernt.")
     @APIResponse(responseCode = "204", description = "Spieler gelöscht")
     @APIResponse(responseCode = "404", description = "Spieler nicht gefunden")
     public Response loeschen(@PathParam("id") Long id) {
@@ -112,22 +111,11 @@ public class PlayerResource {
         return Response.noContent().build();
     }
 
-    @POST
-    @Path("/{id}/spielerpass")
-    @Operation(summary = "Spielerpass registrieren", description = "Vergibt über das Modul Passwesen eine Spieler-ID.")
-    @APIResponse(responseCode = "200", description = "Spielerpass registriert")
-    @APIResponse(responseCode = "404", description = "Spieler nicht gefunden")
-    @APIResponse(responseCode = "409", description = "Spielerpass bereits registriert")
-    public PlayerDTO spielerpassRegistrieren(@PathParam("id") Long id) {
-        return PlayerDTO.fromEntity(playerService.spielerpassRegistrieren(id));
-    }
-
-    private Link spielerpassLink(Long id, UriInfo uriInfo) {
-        URI uri = uriInfo.getBaseUriBuilder()
-                .path(PlayerResource.class)
-                .path(String.valueOf(id))
-                .path("spielerpass")
-                .build();
-        return Link.fromUri(uri).rel("spielerpass-registrieren").build();
+    private HalEntityWrapper<PlayerDTO> mitLinks(PlayerDTO dto, UriInfo uriInfo) {
+        HalEntityWrapper<PlayerDTO> hal = halService.toHalWrapper(dto);
+        if (dto.spielerId() == null) {
+            hal.addLinks(SpielerpassResource.link(dto.id(), uriInfo));
+        }
+        return hal;
     }
 }

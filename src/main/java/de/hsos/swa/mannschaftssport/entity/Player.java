@@ -1,5 +1,7 @@
 package de.hsos.swa.mannschaftssport.entity;
 
+import de.hsos.swa.mannschaftssport.entity.exception.SpielerpassBereitsRegistriertException;
+
 import java.util.Objects;
 
 public class Player {

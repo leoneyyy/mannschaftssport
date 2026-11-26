@@ -1,6 +1,12 @@
 package de.hsos.swa.mannschaftssport.control;
 
-import de.hsos.swa.mannschaftssport.entity.*;
+import de.hsos.swa.mannschaftssport.entity.Player;
+import de.hsos.swa.mannschaftssport.entity.PlayerKatalog;
+import de.hsos.swa.mannschaftssport.entity.SpielerpassService;
+import de.hsos.swa.mannschaftssport.entity.Team;
+import de.hsos.swa.mannschaftssport.entity.TeamKatalog;
+import de.hsos.swa.mannschaftssport.entity.exception.PlayerNichtGefundenException;
+import de.hsos.swa.mannschaftssport.entity.exception.SpielerpassBereitsRegistriertException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -25,7 +31,7 @@ public class PlayerService {
     public Player finde(Long id) {
         Player player = playerKatalog.findePlayer(id);
         if (player == null) {
-            throw new NichtGefundenException("Player", id);
+            throw new PlayerNichtGefundenException(id);
         }
         return player;
     }
@@ -42,8 +48,10 @@ public class PlayerService {
 
     public void loeschen(Long id) {
         finde(id);
-        for (Team team : teamKatalog.alleTeams()) {
+        Team team = teamKatalog.findeTeamVon(id);
+        if (team != null) {
             team.removePlayer(id);
+            teamKatalog.speichereTeam(team);
         }
         playerKatalog.loeschePlayer(id);
     }

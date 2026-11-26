@@ -1,8 +1,5 @@
 package de.hsos.swa.mannschaftssport.boundary.rest;
 
-import de.hsos.swa.mannschaftssport.boundary.dto.ManagerDTO;
-import de.hsos.swa.mannschaftssport.boundary.dto.PlayerDTO;
-import de.hsos.swa.mannschaftssport.boundary.dto.ReferenceDTO;
 import de.hsos.swa.mannschaftssport.boundary.dto.TeamDTO;
 import de.hsos.swa.mannschaftssport.boundary.dto.TeamInputDTO;
 import de.hsos.swa.mannschaftssport.control.TeamService;
@@ -37,7 +34,7 @@ import java.util.List;
 @Path("/teams")
 @Produces({MediaType.APPLICATION_JSON, "application/hal+json"})
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Teams", description = "Verwaltung der Teams mit Manager und Spielern")
+@Tag(name = "Teams", description = "Verwaltung der Teams")
 public class TeamResource {
 
     @Inject
@@ -96,73 +93,6 @@ public class TeamResource {
     @APIResponse(responseCode = "404", description = "Team nicht gefunden")
     public Response loeschen(@PathParam("id") Long id) {
         teamService.loeschen(id);
-        return Response.noContent().build();
-    }
-
-    @GET
-    @Path("/{id}/manager")
-    @RestLink(rel = "manager", entityType = TeamDTO.class)
-    @InjectRestLinks(RestLinkType.INSTANCE)
-    @Operation(summary = "Manager des Teams abrufen")
-    @APIResponse(responseCode = "200", description = "Manager des Teams")
-    @APIResponse(responseCode = "404", description = "Team nicht gefunden oder kein Manager gesetzt")
-    public ManagerDTO manager(@PathParam("id") Long id) {
-        return ManagerDTO.fromEntity(teamService.findeManager(id));
-    }
-
-    @PUT
-    @Path("/{id}/relationships/manager")
-    @Operation(summary = "Manager des Teams setzen")
-    @APIResponse(responseCode = "204", description = "Manager gesetzt")
-    @APIResponse(responseCode = "400", description = "Ungültige Eingabe")
-    @APIResponse(responseCode = "404", description = "Team oder Manager nicht gefunden")
-    public Response setzeManager(@PathParam("id") Long id, @Valid @NotNull ReferenceDTO manager) {
-        teamService.setzeManager(id, manager.id());
-        return Response.noContent().build();
-    }
-
-    @DELETE
-    @Path("/{id}/relationships/manager")
-    @Operation(summary = "Manager des Teams entfernen")
-    @APIResponse(responseCode = "204", description = "Manager entfernt")
-    @APIResponse(responseCode = "404", description = "Team nicht gefunden")
-    public Response entferneManager(@PathParam("id") Long id) {
-        teamService.entferneManager(id);
-        return Response.noContent().build();
-    }
-
-    @GET
-    @Path("/{id}/players")
-    @RestLink(rel = "players", entityType = TeamDTO.class)
-    @InjectRestLinks
-    @Operation(summary = "Spieler des Teams abrufen")
-    @APIResponse(responseCode = "200", description = "Liste der Spieler des Teams")
-    @APIResponse(responseCode = "404", description = "Team nicht gefunden")
-    public List<PlayerDTO> spieler(@PathParam("id") Long id) {
-        return teamService.findeSpieler(id).stream()
-                .map(PlayerDTO::fromEntity)
-                .toList();
-    }
-
-    @POST
-    @Path("/{id}/relationships/players")
-    @Operation(summary = "Spieler zum Team hinzufügen", description = "Nur Spieler mit Spieler-ID können einem Team zugeordnet werden.")
-    @APIResponse(responseCode = "204", description = "Spieler hinzugefügt")
-    @APIResponse(responseCode = "400", description = "Ungültige Eingabe")
-    @APIResponse(responseCode = "404", description = "Team oder Spieler nicht gefunden")
-    @APIResponse(responseCode = "409", description = "Spieler hat noch keinen Spielerpass")
-    public Response fuegeSpielerHinzu(@PathParam("id") Long id, @Valid @NotNull ReferenceDTO player) {
-        teamService.fuegeSpielerHinzu(id, player.id());
-        return Response.noContent().build();
-    }
-
-    @DELETE
-    @Path("/{id}/relationships/players/{playerId}")
-    @Operation(summary = "Spieler aus dem Team entfernen")
-    @APIResponse(responseCode = "204", description = "Spieler entfernt")
-    @APIResponse(responseCode = "404", description = "Team nicht gefunden oder Spieler nicht im Team")
-    public Response entferneSpieler(@PathParam("id") Long id, @PathParam("playerId") Long playerId) {
-        teamService.entferneSpieler(id, playerId);
         return Response.noContent().build();
     }
 }

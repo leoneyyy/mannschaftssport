@@ -5,6 +5,10 @@ import de.hsos.swa.mannschaftssport.entity.Manager;
 import de.hsos.swa.mannschaftssport.entity.Player;
 import de.hsos.swa.mannschaftssport.entity.Team;
 import de.hsos.swa.mannschaftssport.entity.TeamKatalog;
+import de.hsos.swa.mannschaftssport.entity.exception.KeinManagerException;
+import de.hsos.swa.mannschaftssport.entity.exception.PlayerNichtImTeamException;
+import de.hsos.swa.mannschaftssport.entity.exception.PlayerSchonImTeamException;
+import de.hsos.swa.mannschaftssport.entity.exception.TeamNichtGefundenException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -22,7 +26,6 @@ public class TeamService {
     @Inject
     ManagerService managerService;
 
-
     public List<Team> alle() {
         return teamKatalog.alleTeams();
     }
@@ -30,7 +33,7 @@ public class TeamService {
     public Team finde(Long id) {
         Team team = teamKatalog.findeTeam(id);
         if (team == null) {
-            throw new NichtGefundenException("Team", id);
+            throw new TeamNichtGefundenException(id);
         }
         return team;
     }
@@ -51,11 +54,10 @@ public class TeamService {
         teamKatalog.loescheTeam(id);
     }
 
-
     public Manager findeManager(Long teamId) {
         Team team = finde(teamId);
         if (team.getManager() == null) {
-            throw new NichtGefundenException("Manager von Team", teamId);
+            throw new KeinManagerException(teamId);
         }
         return team.getManager();
     }
@@ -73,7 +75,6 @@ public class TeamService {
         teamKatalog.speichereTeam(team);
     }
 
-
     public List<Player> findeSpieler(Long teamId) {
         return finde(teamId).getPlayers();
     }
@@ -81,6 +82,10 @@ public class TeamService {
     public void fuegeSpielerHinzu(Long teamId, Long playerId) {
         Team team = finde(teamId);
         Player player = playerService.finde(playerId);
+        Team anderesTeam = teamKatalog.findeTeamVon(playerId);
+        if (anderesTeam != null && !anderesTeam.getId().equals(teamId)) {
+            throw new PlayerSchonImTeamException(playerId, anderesTeam.getId());
+        }
         team.addPlayer(player);
         teamKatalog.speichereTeam(team);
     }
@@ -88,7 +93,7 @@ public class TeamService {
     public void entferneSpieler(Long teamId, Long playerId) {
         Team team = finde(teamId);
         if (!team.removePlayer(playerId)) {
-            throw new NichtGefundenException("Player in Team " + teamId + ":", playerId);
+            throw new PlayerNichtImTeamException(teamId, playerId);
         }
         teamKatalog.speichereTeam(team);
     }

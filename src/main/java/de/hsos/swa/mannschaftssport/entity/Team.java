@@ -1,5 +1,7 @@
 package de.hsos.swa.mannschaftssport.entity;
 
+import de.hsos.swa.mannschaftssport.entity.exception.SpielerOhneSpielerpassException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
